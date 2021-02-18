@@ -52,7 +52,7 @@
         android:id="@+id/staffFragment"
         android:name="com.example.myapplication.ui.staff.StaffFragment"
         android:label="staff_fragment"
-        tools:layout="@layout/staff_fragment" >
+        tools:layout="@layout/list_staff_fragment" >
         <action
             android:id="@+id/displayStaffDetailsFragment"
             app:destination="@id/displayStaffFragment" />

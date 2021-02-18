@@ -7,13 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.example.myapplication.R
 import com.example.myapplication.data.entity.Person
-import com.example.myapplication.databinding.PersonItemBinding
+import com.example.myapplication.databinding.PersonItemRowBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,13 +26,14 @@ class ListFragment : Fragment(R.layout.list_fragment) {
 
         val list = view.findViewById<RecyclerView>(R.id.task_list)
         val fabAddPerson = view.findViewById<FloatingActionButton>(R.id.fab_add_person)
-        val fabListStaff = view.findViewById<FloatingActionButton>(R.id.fb_test)
+        val fabListStaff = view.findViewById<FloatingActionButton>(R.id.fb_list_staff)
 
         fabListStaff.setOnClickListener { findNavController().navigate(ListFragmentDirections.staffFragment()) }
         fabAddPerson.setOnClickListener { findNavController().navigate(ListFragmentDirections.addPersonFragment(null)) }
         //Setup List Adapter
         val adapter = TaskAdapter()
         list.adapter = adapter
+        list.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
         viewModel.allPerson.observe(viewLifecycleOwner){ adapter.submitList(it.toMutableList()) }
         // Setup swipe delete
         val swipeHandler = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
@@ -62,7 +60,7 @@ class ListFragment : Fragment(R.layout.list_fragment) {
 
     inner class TaskAdapter : ListAdapter<Person, TaskViewHolder>(diff) {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-            return TaskViewHolder(PersonItemBinding.inflate(layoutInflater, parent, false))
+            return TaskViewHolder(PersonItemRowBinding.inflate(layoutInflater, parent, false))
         }
 
         override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
@@ -70,7 +68,7 @@ class ListFragment : Fragment(R.layout.list_fragment) {
         }
     }
 
-    inner class TaskViewHolder(private val binding: PersonItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class TaskViewHolder(private val binding: PersonItemRowBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(model: Person){
             binding.apply {
                 txtSurName.text = model.surName

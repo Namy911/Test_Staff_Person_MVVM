@@ -9,8 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import com.example.myapplication.data.model.StaffAndPersons
-import com.example.myapplication.databinding.StaffFragmentBinding
-import com.example.myapplication.databinding.StaffItemBinding
+import com.example.myapplication.databinding.ListStaffFragmentBinding
+import com.example.myapplication.databinding.StaffItemRowBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val TAG = "StaffFragment"
@@ -18,11 +18,11 @@ private const val TAG = "StaffFragment"
 class StaffFragment : Fragment() {
 
 
-    lateinit var binding: StaffFragmentBinding
+    lateinit var binding: ListStaffFragmentBinding
     private val viewModel: StaffViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        StaffFragmentBinding.inflate(layoutInflater, container, false)
+        ListStaffFragmentBinding.inflate(layoutInflater, container, false)
             .apply { binding = this }
             .root
 
@@ -39,7 +39,7 @@ class StaffFragment : Fragment() {
     }
     inner class StaffAdapter(): ListAdapter<StaffAndPersons, StaffViewHolder>(diff){
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-                StaffViewHolder(StaffItemBinding.inflate(layoutInflater, parent, false))
+                StaffViewHolder(StaffItemRowBinding.inflate(layoutInflater, parent, false))
 
         override fun onBindViewHolder(holder: StaffViewHolder, position: Int) {
             holder.bind(getItem(position))
@@ -57,10 +57,10 @@ class StaffFragment : Fragment() {
 
     }
 
-    inner class StaffViewHolder(private val binding: StaffItemBinding): RecyclerView.ViewHolder(binding.root){
+    inner class StaffViewHolder(private val binding: StaffItemRowBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(model: StaffAndPersons){
             binding.model = model
-            binding.textView4.setOnClickListener {
+            itemView.setOnClickListener {
                 findNavController().navigate(StaffFragmentDirections.displayStaffDetailsFragment(model))
             }
             binding.executePendingBindings()

@@ -2,14 +2,12 @@ package com.example.myapplication.ui.list
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -19,9 +17,7 @@ import com.example.myapplication.data.entity.Staff
 import com.example.myapplication.databinding.AddPersonFragmentBinding
 import com.example.myapplication.ui.util.MyUtil
 import com.example.myapplication.ui.util.dialog.DialogDatePiker
-import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
 import java.util.*
 
 private const val TAG = "AddPersonFragment"
@@ -68,7 +64,7 @@ class AddPersonFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 args.model?.person
             }
 
-            botMenuAdd.setOnNavigationItemSelectedListener { item -> setupBottomMenu(item) }
+            botMenuAdd.setOnNavigationItemSelectedListener { item -> actionMessage(); setupBottomMenu(item) }
 
             btnDate.setOnClickListener {
                 // Create Listener
@@ -148,6 +144,11 @@ class AddPersonFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
+    private fun actionMessage() {
+        Toast.makeText(requireContext(), getString(R.string.update_insert_msg_toast), Toast.LENGTH_SHORT)
+            .show()
+    }
+
     private fun clearInputs(){
         binding.apply {
             edtName.text.clear()
@@ -175,7 +176,7 @@ class AddPersonFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
         // Create view and associate data
         private fun createView(position: Int, recycledView: View?, parent: ViewGroup): View {
-            val view = recycledView ?: layoutInflater.inflate(R.layout.sppiner_row_staff, parent, false)
+            val view = recycledView ?: layoutInflater.inflate(R.layout.staff_sppiner_row, parent, false)
             val field = view.findViewById<TextView>(R.id.txt_staff_office)
             field.text = getItem(position)!!.office
             return view

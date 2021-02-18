@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">My Application</string>
+
+    <string name="hint_name_person">Name</string>
+    <string name="hint_sur_name_person">Sur Name</string>
     <!--Dialog Delete Person-->
     <string name="dialog_delete_message">You sure you want to delete <b>%s %s </b> ?</string>
     <string name="dialog_delete_title">Delete Person</string>
@@ -10,4 +13,7 @@
     <string name="snack_btn_message">Undo</string>
 
     <string name="msg_no_staff_display">No Data</string>
+    >
+    <string name="delete_msg_toast"> %s  has been deleted </string>
+    <string name="update_insert_msg_toast">Data has been updated </string>
 </resources>
