@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.data.entity.Person
-import com.example.myapplication.databinding.TaskItemBinding
+import com.example.myapplication.databinding.PersonItemBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,17 +28,15 @@ class ListFragment : Fragment(R.layout.list_fragment) {
         super.onViewCreated(view, savedInstanceState)
 
         val list = view.findViewById<RecyclerView>(R.id.task_list)
-        val fabAdd = view.findViewById<FloatingActionButton>(R.id.fab_add_person)
-        val fabTest = view.findViewById<FloatingActionButton>(R.id.fb_test)
+        val fabAddPerson = view.findViewById<FloatingActionButton>(R.id.fab_add_person)
+        val fabListStaff = view.findViewById<FloatingActionButton>(R.id.fb_test)
 
-        fabTest.setOnClickListener { findNavController().navigate(ListFragmentDirections.staffFragment()) }
-        fabAdd.setOnClickListener { findNavController().navigate(ListFragmentDirections.addPersonFragment(null)) }
-
+        fabListStaff.setOnClickListener { findNavController().navigate(ListFragmentDirections.staffFragment()) }
+        fabAddPerson.setOnClickListener { findNavController().navigate(ListFragmentDirections.addPersonFragment(null)) }
         //Setup List Adapter
         val adapter = TaskAdapter()
         list.adapter = adapter
         viewModel.allPerson.observe(viewLifecycleOwner){ adapter.submitList(it.toMutableList()) }
-
         // Setup swipe delete
         val swipeHandler = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false
@@ -48,7 +46,6 @@ class ListFragment : Fragment(R.layout.list_fragment) {
                 val person = adapter.currentList[position]
 
                 viewModel.deletePerson(person)
-
                 Snackbar.make(requireView(), getString(R.string.snack_delete_item, person.name), Snackbar.LENGTH_LONG)
                         .setAction(getString(R.string.snack_btn_message)) {
                             viewModel.insertPerson(person)
@@ -58,7 +55,6 @@ class ListFragment : Fragment(R.layout.list_fragment) {
                         .show()
             }
         }
-
         ItemTouchHelper(swipeHandler).apply {
             attachToRecyclerView(list)
         }
@@ -66,7 +62,7 @@ class ListFragment : Fragment(R.layout.list_fragment) {
 
     inner class TaskAdapter : ListAdapter<Person, TaskViewHolder>(diff) {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-            return TaskViewHolder(TaskItemBinding.inflate(layoutInflater, parent, false))
+            return TaskViewHolder(PersonItemBinding.inflate(layoutInflater, parent, false))
         }
 
         override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
@@ -74,11 +70,12 @@ class ListFragment : Fragment(R.layout.list_fragment) {
         }
     }
 
-    inner class TaskViewHolder(private val binding: TaskItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class TaskViewHolder(private val binding: PersonItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(model: Person){
             binding.apply {
-                textView.text = model.name
-                textView.setOnClickListener {
+                txtSurName.text = model.surName
+                txtName.text = model.name
+                imgPerson.setOnClickListener {
                     findNavController().navigate(ListFragmentDirections.displayPersonFragment(model.id))
                 }
             }

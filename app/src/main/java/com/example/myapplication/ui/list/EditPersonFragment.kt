@@ -102,22 +102,27 @@ class AddPersonFragment : Fragment(), AdapterView.OnItemSelectedListener {
         viewModel.savePersonState(setupModel())
     }
 
-    private fun setupModel() = if (args.model == null) {
-        // Case: Create Model
-        Person(
-            name = binding.edtName.text.toString(),
-            surName = binding.edtSurName.text.toString(),
-            date = Date(viewModel.getPikerPerson()!!),
-            staffId = staff.id
-        )
-    } else {
-        // Case: Update Model
-        args.model!!.person.copy(
-            name = binding.edtName.text.toString(),
-            surName = binding.edtSurName.text.toString(),
-            date = Date(viewModel.getPikerPerson()!!),
-            staffId = staff.id
-        )
+    private fun setupModel(): Person {
+        val newPerson = if (args.model == null) {
+            // Case: Create Model
+            Person(
+                name = binding.edtName.text.toString(),
+                surName = binding.edtSurName.text.toString(),
+                date = Date(System.currentTimeMillis()),
+                staffId = staff.id
+            )
+        } else {
+            // Case: Update Model
+            args.model!!.person.copy(
+                name = binding.edtName.text.toString(),
+                surName = binding.edtSurName.text.toString(),
+                staffId = staff.id
+            )
+        }
+        if (viewModel.getPikerPerson() != null) {
+            newPerson.date = Date(viewModel.getPikerPerson()!!)
+        }
+        return newPerson
     }
 
     private fun dialogPikerNavigate(stamp: Long) {
