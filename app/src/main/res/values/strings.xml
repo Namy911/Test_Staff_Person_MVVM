@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <!--Dialog Delete Person-->
+    <string name="dialog_delete_message">You sure you want to delete <b>%s %s </b> ?</string>
+    <string name="dialog_delete_title">Delete Person</string>
+    <string name="YES">Yes</string>
+    <string name="NO">Cancel</string>
+
+    <string name="snack_delete_item">Delete %s ?</string>
+    <string name="snack_btn_message">Undo</string>
+
+    <string name="msg_no_staff_display">No Data</string>
+</resources>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/listFragment">
+
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.example.myapplication.ui.list.ListFragment"
+        android:label="Contacts"
+        tools:layout="@layout/list_fragment" >
+        <action
+            android:id="@+id/addPersonFragment"
+            app:destination="@id/addPersonFragment" />
+        <action
+            android:id="@+id/displayPersonFragment"
+            app:destination="@id/displayPersonFragment" />
+        <action
+            android:id="@+id/staffFragment"
+            app:destination="@id/staffFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addPersonFragment"
+        android:name="com.example.myapplication.ui.list.AddPersonFragment"
+        android:label="Add New Person" >
+        <argument
+            android:name="model"
+            app:argType="com.example.myapplication.data.model.PersonAndStaff"
+            app:nullable="true" />
+        <action
+            android:id="@+id/dialogDatePikerFragment"
+            app:destination="@id/dialogDatePiker2" />
+    </fragment>
+    <fragment
+        android:id="@+id/displayPersonFragment"
+        android:name="com.example.myapplication.ui.list.DisplayPersonFragment"
+        android:label="DisplayPersonFragment" >
+        <argument
+            android:name="personId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/updatePersonFragment"
+            app:destination="@id/addPersonFragment"
+            app:popUpTo="@id/listFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/dialogDeleteItem"
+            app:destination="@id/dialogDeleteItem" />
+    </fragment>
+    <fragment
+        android:id="@+id/staffFragment"
+        android:name="com.example.myapplication.ui.staff.StaffFragment"
+        android:label="staff_fragment"
+        tools:layout="@layout/staff_fragment" >
+        <action
+            android:id="@+id/displayStaffDetailsFragment"
+            app:destination="@id/displayStaffFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/displayStaffFragment"
+        android:name="com.example.myapplication.ui.staff.DisplayStaffFragment"
+        android:label="DisplayStaffFragment" >
+        <argument
+            android:name="model"
+            app:argType="com.example.myapplication.data.model.StaffAndPersons" />
+    </fragment>
+    <dialog
+        android:id="@+id/dialogDeleteItem"
+        android:name="com.example.myapplication.ui.util.dialog.DialogDeleteItem"
+        android:label="DialogDeleteItem" >
+        <argument
+            android:name="model"
+            app:argType="com.example.myapplication.data.entity.Person" />
+        <action
+            android:id="@+id/popUp_dialogDeleteItem"
+            app:destination="@id/listFragment"
+            app:popUpTo="@id/listFragment"
+            app:popUpToInclusive="true" />
+    </dialog>
+    <dialog
+        android:id="@+id/dialogDatePiker2"
+        android:name="com.example.myapplication.ui.util.dialog.DialogDatePiker"
+        android:label="DialogDatePiker" >
+        <argument
+            android:name="timeStamp"
+            app:argType="long" />
+    </dialog>
+</navigation>
