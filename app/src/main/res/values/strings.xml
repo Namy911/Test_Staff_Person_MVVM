@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Office MVVM</string>
 
     <string name="hint_name_person">Name</string>
     <string name="hint_sur_name_person">Sur Name</string>
@@ -16,4 +16,8 @@
     >
     <string name="delete_msg_toast"> %s  has been deleted </string>
     <string name="update_insert_msg_toast">Data has been updated </string>
+
+    <string name="btn_gallery">Gallery</string>
+    <string name="btn_capture">Capture</string>
+    <string name="empty_list">Empty List</string>
 </resources>

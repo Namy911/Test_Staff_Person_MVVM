@@ -1,10 +1,15 @@
-package com.example.myapplication.ui.list
+package com.example.myapplication.ui.person
 
+import android.content.ContentResolver
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -23,7 +28,7 @@ class DisplayPersonFragment: Fragment() {
 
     lateinit var binding: DisplayFragmentBinding
     private val args: DisplayPersonFragmentArgs by navArgs()
-    private val viewModel: ListViewModel by viewModels()
+    private val viewModel: PersonViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
             DisplayFragmentBinding

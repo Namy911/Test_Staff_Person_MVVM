@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.list
+package com.example.myapplication.ui.person
 
 import androidx.lifecycle.*
 import com.example.myapplication.data.entity.Person
@@ -17,7 +17,7 @@ import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class ListViewModel @Inject constructor(
+class PersonViewModel @Inject constructor(
     private val repoPerson: PersonRepository,
     private val repoStuff: StaffRepository,
     private val repoStuffAndPersons: StaffAndPersonsRepository,
@@ -63,7 +63,7 @@ class ListViewModel @Inject constructor(
     }
 
     fun savePersonState(model: Person){
-        val stamp = getPikerPerson()
+        val stamp = getPikerPersonState()
         stamp?.let {
             model.copy(date = Date(it))
             savedStateHandle.set(PERSON_STATE, model)
@@ -71,8 +71,9 @@ class ListViewModel @Inject constructor(
     }
 
     fun getPersonState(): Person? = savedStateHandle.get<Person>(PERSON_STATE)
-    fun savePikerPerson(stamp: Long) = savedStateHandle.set(PERSON_PIKER_STATE, stamp)
-    fun getPikerPerson(): Long? = savedStateHandle.get<Long>(PERSON_PIKER_STATE)
+
+    fun savePikerPersonState(stamp: Long) = savedStateHandle.set(PERSON_PIKER_STATE, stamp)
+    fun getPikerPersonState(): Long? = savedStateHandle.get<Long>(PERSON_PIKER_STATE)
 
 // ======================================== DB Work ============================================= //
 

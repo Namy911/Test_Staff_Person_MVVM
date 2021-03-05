@@ -56,32 +56,30 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
-
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
-
     // Room + Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
-//    implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
-
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "androidx.hilt:hilt-work:$hilt_lifecycle"
     kapt "androidx.hilt:hilt-compiler:$hilt_lifecycle"
-    //viewModel Factory
-//    kapt "androidx.hilt:hilt-compiler:$hilt_optional"
-//    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_optional"
-
-
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:4.5.0"
+    def camerax_version = "1.0.0-rc01"
+// CameraX core library using camera2 implementation
+    implementation "androidx.camera:camera-camera2:$camerax_version"
+// CameraX Lifecycle Library
+    implementation "androidx.camera:camera-lifecycle:$camerax_version"
+// CameraX View class
+    implementation "androidx.camera:camera-view:1.0.0-alpha21"
 
 }

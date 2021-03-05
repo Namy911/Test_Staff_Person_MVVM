@@ -8,14 +8,14 @@ import com.example.myapplication.data.db.migration.Migration1To2
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 object RoomModule {
 
@@ -47,6 +47,8 @@ object RoomModule {
     @Singleton
     @Provides
     fun provideAppScope() = CoroutineScope(SupervisorJob())
+
+
 
 }
 @Retention(AnnotationRetention.RUNTIME)

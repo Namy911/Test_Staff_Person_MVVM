@@ -1,5 +1,7 @@
 package com.example.myapplication.data.db.util
 
+import android.net.Uri
+import androidx.core.net.toUri
 import androidx.room.TypeConverter
 import java.util.*
 

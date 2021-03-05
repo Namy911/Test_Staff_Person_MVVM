@@ -1,7 +1,10 @@
 package com.example.myapplication.data.entity
 
+import android.net.Uri
 import android.os.Parcelable
 import androidx.room.*
+import androidx.room.ForeignKey.CASCADE
+import androidx.room.ForeignKey.SET_NULL
 import kotlinx.coroutines.flow.Flow
 import kotlinx.parcelize.Parcelize
 import java.util.*
@@ -9,9 +12,11 @@ import java.util.*
 
 @Entity(tableName = "persons",
     foreignKeys = [ForeignKey(
-        entity = Person::class,
+        entity = Staff::class,
         parentColumns = arrayOf("_id"),
         childColumns = arrayOf("staff_id"),
+        onUpdate = CASCADE,
+        onDelete = CASCADE
     )])
 @Parcelize
 data class Person(
