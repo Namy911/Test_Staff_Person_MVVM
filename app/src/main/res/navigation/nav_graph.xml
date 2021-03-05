@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.example.myapplication.ui.list.ListFragment"
+        android:name="com.example.myapplication.ui.person.ListFragment"
         android:label="Contacts"
         tools:layout="@layout/list_fragment" >
         <action
@@ -19,10 +19,13 @@
         <action
             android:id="@+id/staffFragment"
             app:destination="@id/staffFragment" />
+        <action
+            android:id="@+id/AlbumFragment"
+            app:destination="@id/albumFragment" />
     </fragment>
     <fragment
         android:id="@+id/addPersonFragment"
-        android:name="com.example.myapplication.ui.list.AddPersonFragment"
+        android:name="com.example.myapplication.ui.person.AddPersonFragment"
         android:label="Add New Person" >
         <argument
             android:name="model"
@@ -34,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/displayPersonFragment"
-        android:name="com.example.myapplication.ui.list.DisplayPersonFragment"
+        android:name="com.example.myapplication.ui.person.DisplayPersonFragment"
         android:label="DisplayPersonFragment" >
         <argument
             android:name="personId"
@@ -86,4 +89,8 @@
             android:name="timeStamp"
             app:argType="long" />
     </dialog>
+    <fragment
+        android:id="@+id/albumFragment"
+        android:name="com.example.myapplication.ui.album.AlbumFragment"
+        android:label="AlbumFragment" />
 </navigation>

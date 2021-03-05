@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.list
+package com.example.myapplication.ui.person
 
 import android.graphics.Color
 import android.os.Bundle
@@ -19,7 +19,7 @@ private const val TAG = "ListFragment"
 @AndroidEntryPoint
 class ListFragment : Fragment(R.layout.list_fragment) {
 
-    private val viewModel: ListViewModel by viewModels()
+    private val viewModel: PersonViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,13 +27,14 @@ class ListFragment : Fragment(R.layout.list_fragment) {
         val list = view.findViewById<RecyclerView>(R.id.task_list)
         val fabAddPerson = view.findViewById<FloatingActionButton>(R.id.fab_add_person)
         val fabListStaff = view.findViewById<FloatingActionButton>(R.id.fb_list_staff)
+        val fabAlbum = view.findViewById<FloatingActionButton>(R.id.fab_album)
 
         fabListStaff.setOnClickListener { findNavController().navigate(ListFragmentDirections.staffFragment()) }
+        fabAlbum.setOnClickListener { findNavController().navigate(ListFragmentDirections.AlbumFragment()) }
         fabAddPerson.setOnClickListener { findNavController().navigate(ListFragmentDirections.addPersonFragment(null)) }
         //Setup List Adapter
         val adapter = TaskAdapter()
         list.adapter = adapter
-        list.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
         viewModel.allPerson.observe(viewLifecycleOwner){ adapter.submitList(it.toMutableList()) }
         // Setup swipe delete
         val swipeHandler = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {

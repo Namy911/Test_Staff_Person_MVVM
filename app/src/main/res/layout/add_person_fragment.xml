@@ -2,41 +2,34 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
         <variable
             name="person"
             type="com.example.myapplication.data.entity.Person" />
     </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/img_person"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:contentDescription="@string/app_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/person_2" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/section_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.20"
+            android:orientation="horizontal" />
 
         <EditText
             android:id="@+id/edt_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:ems="10"
-            android:inputType="textPersonName"
             android:hint="@string/hint_name_person"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
             android:text="@{person != null ? person.name : null}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/img_person"
-            android:importantForAutofill="no" />
+            app:layout_constraintTop_toBottomOf="@id/section_start" />
 
         <EditText
             android:id="@+id/edt_sur_name"

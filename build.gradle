@@ -7,7 +7,7 @@ buildscript {
         lifecycle_version  = "2.2.0"
         room_version   = "2.2.6"
         hilt_lifecycle = "1.0.0-alpha03"
-        hilt_version   = "2.31.2-alpha"
+        hilt_version   = "2.33-beta"
         retofit_version = "2.6.0"
     }
     repositories {

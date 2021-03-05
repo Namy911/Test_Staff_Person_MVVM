@@ -2,8 +2,6 @@ package com.example.myapplication.ui.util.dialog
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.icu.text.DateTimePatternGenerator.PatternInfo.OK
-import android.icu.text.Normalizer.NO
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
@@ -11,13 +9,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.myapplication.R
-import com.example.myapplication.ui.list.ListViewModel
+import com.example.myapplication.ui.person.PersonViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DialogDeleteItem: DialogFragment() {
 
-    private val viewModel: ListViewModel by viewModels()
+    private val viewModel: PersonViewModel by viewModels()
     private val args: DialogDeleteItemArgs by navArgs()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =

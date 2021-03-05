@@ -1,12 +1,14 @@
-package com.example.myapplication.ui.list
+package com.example.myapplication.ui.person
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -26,8 +28,9 @@ private const val TAG = "AddPersonFragment"
 class AddPersonFragment : Fragment(), AdapterView.OnItemSelectedListener {
     lateinit var binding: AddPersonFragmentBinding
     private val args: AddPersonFragmentArgs by navArgs()
-    private val viewModel: ListViewModel by viewModels()
+    private val viewModel: PersonViewModel by viewModels()
     lateinit var staff: Staff
+    private var imgUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,11 +56,12 @@ class AddPersonFragment : Fragment(), AdapterView.OnItemSelectedListener {
             viewLifecycleOwner,
             { _, result: Bundle ->
                 val date = result.get(DialogDatePiker.TIME_STAMP).toString().toLong()
-                viewModel.savePikerPerson(date)
+                viewModel.savePikerPersonState(date)
                 binding.btnDate.text =  MyUtil().convertBtnText(date)
             })
-        // Restore State from view (model: Person)
+
         binding.apply {
+            // Restore State from view (model: Person)
             person = if (savedInstanceState != null) {
                 viewModel.getPersonState()
             } else {
@@ -72,7 +76,7 @@ class AddPersonFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     dialogPikerNavigate(System.currentTimeMillis())
                 }else {
                     // Update Listener
-                    viewModel.getPikerPerson()?.let { dialogPikerNavigate(it) }
+                    viewModel.getPikerPersonState()?.let { dialogPikerNavigate(it) }
                         ?: dialogPikerNavigate(person!!.date.time)
                 }
             }
@@ -115,8 +119,8 @@ class AddPersonFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 staffId = staff.id
             )
         }
-        if (viewModel.getPikerPerson() != null) {
-            newPerson.date = Date(viewModel.getPikerPerson()!!)
+        if (viewModel.getPikerPersonState() != null) {
+            newPerson.date = Date(viewModel.getPikerPersonState()!!)
         }
         return newPerson
     }
@@ -130,7 +134,7 @@ class AddPersonFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private fun setupBottomMenu(item: MenuItem) = when (item.itemId) {
         R.id.menu_save_add -> {
             viewModel.insertPerson(setupModel())
-            viewModel.savePikerPerson(System.currentTimeMillis())
+            viewModel.savePikerPersonState(System.currentTimeMillis())
             clearInputs()
             true
         }
@@ -144,11 +148,17 @@ class AddPersonFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
+    // Spinner setup
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
+        staff = parent?.getItemAtPosition(pos) as Staff
+        viewModel.saveSpinnerSelection(staff)
+    }
+    override fun onNothingSelected(p0: AdapterView<*>?) { }
+
     private fun actionMessage() {
         Toast.makeText(requireContext(), getString(R.string.update_insert_msg_toast), Toast.LENGTH_SHORT)
             .show()
     }
-
     private fun clearInputs(){
         binding.apply {
             edtName.text.clear()
@@ -157,20 +167,12 @@ class AddPersonFragment : Fragment(), AdapterView.OnItemSelectedListener {
             spinStaff.setSelection(0)
         }
     }
-    // Spinner setup
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-        staff = parent?.getItemAtPosition(pos) as Staff
-        viewModel.saveSpinnerSelection(staff)
-    }
-
-    override fun onNothingSelected(p0: AdapterView<*>?) { }
 
     inner class SpinnerArrayAdapter(context: Context, items: List<Staff>) :
         ArrayAdapter<Staff>(context, 0, items) {
         override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
             return this.createView(position, convertView, parent)
         }
-
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             return this.createView(position, convertView, parent)
         }
