@@ -6,6 +6,9 @@
         <variable
             name="album"
             type="com.example.myapplication.data.entity.Album" />
+        <variable
+            name="holder"
+            type="com.example.myapplication.ui.album.AlbumFragment.AlbumViewHolder" />
 
     </data>
 
@@ -16,6 +19,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="210dp"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,13 +31,14 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="165dp"
+                    android:onClick="@{() -> holder.action.invoke(album)}"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/person_2" />
+                    app:srcCompat="@drawable/person_2"
+                    android:contentDescription="@string/app_name" />
 
                 <TextView
                     android:id="@+id/album_title"
@@ -44,25 +49,6 @@
                     android:layout_below="@id/imageView"
                     android:layout_marginStart="10dp"
                     android:text="@{album.title}" />
-
-                <TextView
-                    android:id="@+id/album_owner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textSize="18sp"
-                    android:layout_below="@id/album_title"
-                    android:text="User Name" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/album_title"
-                    android:textSize="18sp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="10dp"
-                    android:text="100 images" />
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>

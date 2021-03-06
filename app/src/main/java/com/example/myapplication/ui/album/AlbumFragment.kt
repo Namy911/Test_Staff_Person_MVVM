@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +32,9 @@ class AlbumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = AlbumAdapter()
+        val adapter = AlbumAdapter(){
+            findNavController().navigate(AlbumFragmentDirections.DisplayAlbumFragment(it))
+        }
         binding.apply {
             albumContainer.adapter = adapter
         }
@@ -40,9 +43,9 @@ class AlbumFragment : Fragment() {
         }
     }
 
-    inner class AlbumAdapter: ListAdapter<Album, AlbumViewHolder>(diff){
+    inner class AlbumAdapter(private val action: (Album) -> Unit): ListAdapter<Album, AlbumViewHolder>(diff){
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder =
-            AlbumViewHolder(AlbumItemRowBinding.inflate(layoutInflater, parent, false))
+            AlbumViewHolder(AlbumItemRowBinding.inflate(layoutInflater, parent, false), action)
 
         override fun onBindViewHolder(holder: AlbumViewHolder, position: Int) {
             holder.bind(getItem(position))
@@ -50,9 +53,17 @@ class AlbumFragment : Fragment() {
 
     }
 
-    inner class AlbumViewHolder( private val binding: AlbumItemRowBinding): RecyclerView.ViewHolder(binding.root){
+    inner class AlbumViewHolder(
+        private val binding: AlbumItemRowBinding,
+        val action: (Album) -> Unit): RecyclerView.ViewHolder(binding.root){
+
+        init {
+            itemView.setOnClickListener { }
+        }
+
         fun bind(model: Album){
             binding.album = model
+            binding.holder = this
             binding.executePendingBindings()
         }
     }
