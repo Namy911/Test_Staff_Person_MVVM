@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Office MVVM</string>
+    <string name="hint_name_person">Nume</string>
+    <string name="hint_sur_name_person">Prenume</string>
+    <string name="dialog_delete_message">Sunte-ti sigur ca doriti sa stergeti %s %s ?</string>
+    <string name="dialog_delete_title">Sterge Persoana</string>
+    <string name="YES">Da</string>
+    <string name="NO">Anuleaza</string>
+    <string name="snack_delete_item">Sterge %s ?</string>
+    <string name="snack_btn_message">Anuleaza</string>
+    <string name="msg_no_staff_display">Nu sunt Date</string>
+    <string name="delete_msg_toast">$s a fost sters</string>
+    <string name="update_insert_msg_toast">Datele au  fost innoite</string>
+    <string name="empty_filed">Cimpuri pustii</string>
+    <string name="empty_list">Lista este goala</string>
+</resources>

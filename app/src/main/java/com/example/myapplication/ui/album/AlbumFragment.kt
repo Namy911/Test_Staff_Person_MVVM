@@ -62,9 +62,11 @@ class AlbumFragment : Fragment() {
         }
 
         fun bind(model: Album){
-            binding.album = model
-            binding.holder = this
-            binding.executePendingBindings()
+            binding.apply {
+                album = model
+                holder = this@AlbumViewHolder
+                executePendingBindings()
+            }
         }
     }
 

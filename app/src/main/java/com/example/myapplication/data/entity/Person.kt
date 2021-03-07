@@ -6,6 +6,7 @@ import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.ForeignKey.SET_NULL
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
@@ -41,7 +42,11 @@ data class Person(
         @Query("SELECT * FROM `persons` WHERE `_id` = :id")
         fun getPerson(id: Int): Flow<Person>
 
+        fun getPersonDistinct(id: Int) =  getPerson(id).distinctUntilChanged()
+
         @Query("SELECT * FROM `persons`")
         fun allPerson(): Flow<List<Person>>
+
+        fun allPersonDistinct() = allPerson().distinctUntilChanged()
     }
 }

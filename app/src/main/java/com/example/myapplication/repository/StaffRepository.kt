@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 class StaffRepository @Inject constructor( private val repo: Staff.Store) {
 
-    fun getAllStaff() = repo.allStaff()
+    fun getAllStaff() = repo.allStaffDistinct()
 
-    fun getStaff(id: Int) = repo.getStaff(id)
+    fun getStaff(id: Int) = repo.getStaffDistinct(id)
 }

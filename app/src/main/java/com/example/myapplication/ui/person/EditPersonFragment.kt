@@ -3,6 +3,7 @@ package com.example.myapplication.ui.person
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -68,7 +69,7 @@ class AddPersonFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 args.model?.person
             }
 
-            botMenuAdd.setOnNavigationItemSelectedListener { item -> actionMessage(); setupBottomMenu(item) }
+            botMenuAdd.setOnNavigationItemSelectedListener { item ->  setupBottomMenu(item) }
 
             btnDate.setOnClickListener {
                 // Create Listener
@@ -124,7 +125,13 @@ class AddPersonFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
         return newPerson
     }
+    // Check if inputs is completed
+    private fun validation(): Boolean{
+        if (binding.edtName.text.isEmpty()){ binding.edtName.error = getString(R.string.empty_filed) }
+        if (binding.edtSurName.text.isEmpty()){ binding.edtSurName.error = getString(R.string.empty_filed) }
 
+        return  (binding.edtName.text.isNotEmpty() && binding.edtSurName.text.isNotEmpty())
+    }
     private fun dialogPikerNavigate(stamp: Long) {
             findNavController().navigate(
                 AddPersonFragmentDirections.dialogDatePikerFragment(stamp)
@@ -133,14 +140,20 @@ class AddPersonFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private fun setupBottomMenu(item: MenuItem) = when (item.itemId) {
         R.id.menu_save_add -> {
-            viewModel.insertPerson(setupModel())
-            viewModel.savePikerPersonState(System.currentTimeMillis())
-            clearInputs()
+            if (validation()) {
+                viewModel.insertPerson(setupModel())
+                viewModel.savePikerPersonState(System.currentTimeMillis())
+                clearInputs()
+                actionMessage()
+            }
             true
         }
         R.id.menu_save_person -> {
-            viewModel.insertPerson(setupModel())
-            findNavController().popBackStack()
+            if (validation()) {
+                viewModel.insertPerson(setupModel())
+                findNavController().popBackStack()
+                actionMessage()
+            }
             true
         }
         else -> {

@@ -14,6 +14,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object RetrofitModule {
+    const val BASE_URL = "https://jsonplaceholder.typicode.com/"
 
     @Singleton
     @Provides
@@ -23,7 +24,7 @@ object RetrofitModule {
     @Singleton
     @Provides
     fun provideRetrofitInstance(okHttpClient: OkHttpClient): Retrofit =
-        Retrofit.Builder().baseUrl("https://jsonplaceholder.typicode.com/")
+        Retrofit.Builder().baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
         .build()

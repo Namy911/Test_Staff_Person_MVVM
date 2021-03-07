@@ -18,8 +18,8 @@ class AlbumViewModel @Inject constructor( private val repo: AlbumRepository): Vi
     private val _albums: MutableLiveData<List<Album>> by lazy { MutableLiveData<List<Album>>() }
     val album get() = _albums
 
-    private val _users: MutableLiveData<List<User>> by lazy { MutableLiveData<List<User>>() }
-    val user get() = _users
+//    private val _users: MutableLiveData<List<User>> by lazy { MutableLiveData<List<User>>() }
+//    val user get() = _users
 
     private val _photos: MutableLiveData<List<Photo>> by lazy { MutableLiveData<List<Photo>>() }
     val photo get() = _photos
@@ -27,7 +27,7 @@ class AlbumViewModel @Inject constructor( private val repo: AlbumRepository): Vi
 
     init {
         getAlbums()
-        getUsers()
+//        getUsers()
     }
 
     private fun getAlbums(){
@@ -41,18 +41,18 @@ class AlbumViewModel @Inject constructor( private val repo: AlbumRepository): Vi
         }
     }
 
-    private fun getUsers(){
-        viewModelScope.launch {
-            val response = repo.getUsers()
-            if (response.isSuccessful){
-                response.body()?.let {
-                    _users.value = it
-                }
-            }
-        }
-    }
+//    private fun getUsers(){
+//        viewModelScope.launch {
+//            val response = repo.getUsers()
+//            if (response.isSuccessful){
+//                response.body()?.let {
+//                    _users.value = it
+//                }
+//            }
+//        }
+//    }
 
-    fun getAlbumById(id: Int = 3){
+    fun getAlbumById(id: Int){
         viewModelScope.launch {
             val response = repo.getAlbumById(id)
             if (response.isSuccessful){

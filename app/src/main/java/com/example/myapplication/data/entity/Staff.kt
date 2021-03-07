@@ -3,6 +3,7 @@ package com.example.myapplication.data.entity
 import android.os.Parcelable
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.parcelize.Parcelize
 
 
@@ -28,7 +29,11 @@ data class Staff(
         @Query("SELECT * FROM `staffs` WHERE `_id` = :id")
         fun getStaff(id: Int): Flow<Staff>
 
+        fun getStaffDistinct(id: Int) = getStaff(id).distinctUntilChanged()
+
         @Query("SELECT * FROM `staffs`")
         fun allStaff(): Flow<List<Staff>>
+
+        fun allStaffDistinct() = allStaff().distinctUntilChanged()
     }
 }

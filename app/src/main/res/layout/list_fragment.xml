@@ -55,9 +55,9 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
-        android:src="@drawable/ic_baseline_edit_24"
-        app:layout_constraintBottom_toTopOf="@+id/fb_list_staff"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/app_name"
         android:focusable="true"
-        android:contentDescription="@string/app_name" />
+        android:src="@drawable/ic_baseline_wifi_24"
+        app:layout_constraintBottom_toTopOf="@+id/fb_list_staff"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

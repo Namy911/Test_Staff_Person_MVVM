@@ -5,9 +5,9 @@ import javax.inject.Inject
 
 class PersonRepository @Inject constructor(private val store: Person.Store) {
 
-    fun allPeron() = store.allPerson()
+    fun allPeron() = store.allPersonDistinct()
 
-    fun getPerson(id: Int) = store.getPerson(id)
+    fun getPerson(id: Int) = store.getPersonDistinct(id)
 
     suspend fun insertPerson(model: Person){ store.insertPerson(model) }
 

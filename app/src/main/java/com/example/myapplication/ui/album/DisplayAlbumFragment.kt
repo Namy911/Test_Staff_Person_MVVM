@@ -37,13 +37,11 @@ class DisplayAlbumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val id = args.albumId.id
-
         viewModel.getAlbumById(id)
+        // Setup list Adapter
         val adapter = PhotoAdapter()
         binding.containerPhoto.adapter = adapter
-        viewModel.photo.observe(viewLifecycleOwner){
-            adapter.submitList(it.toMutableList())
-        }
+        viewModel.photo.observe(viewLifecycleOwner){ adapter.submitList(it.toMutableList()) }
     }
 
     inner class PhotoAdapter: ListAdapter<Photo, PhotoViewHolder>(diff){
@@ -56,6 +54,7 @@ class DisplayAlbumFragment : Fragment() {
         }
 
     }
+
     inner class PhotoViewHolder(val binding: PhotoItemRowBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(model:Photo){
             binding.txtPhotoTitle.text = model.title
@@ -67,6 +66,7 @@ class DisplayAlbumFragment : Fragment() {
         }
 
     }
+
     internal val diff = object: DiffUtil.ItemCallback<Photo>() {
         override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
             return oldItem.id == newItem.id

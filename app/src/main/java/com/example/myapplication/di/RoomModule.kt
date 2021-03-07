@@ -48,8 +48,6 @@ object RoomModule {
     @Provides
     fun provideAppScope() = CoroutineScope(SupervisorJob())
 
-
-
 }
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
