@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import com.example.myapplication.data.model.StaffAndPersons
 import com.example.myapplication.databinding.ListStaffFragmentBinding
 import com.example.myapplication.databinding.StaffItemRowBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 private const val TAG = "StaffFragment"
 @AndroidEntryPoint
@@ -29,11 +31,13 @@ class StaffFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = StaffAdapter()
-        viewModel.listStaff.observe(viewLifecycleOwner){
-            binding.apply {
-                listStaff.adapter = adapter
-                listStaff.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
-                adapter.submitList(it)
+        lifecycleScope.launchWhenStarted {
+            viewModel.listStaff.collect {
+                binding.apply {
+                    listStaff.adapter = adapter
+                    listStaff.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
+                    adapter.submitList(it)
+                }
             }
         }
     }

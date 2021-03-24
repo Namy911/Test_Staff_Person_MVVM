@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import com.example.myapplication.R
@@ -14,6 +15,7 @@ import com.example.myapplication.databinding.PersonItemRowBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 private const val TAG = "ListFragment"
 @AndroidEntryPoint
@@ -35,7 +37,10 @@ class ListFragment : Fragment(R.layout.list_fragment) {
         //Setup List Adapter
         val adapter = TaskAdapter()
         list.adapter = adapter
-        viewModel.allPerson.observe(viewLifecycleOwner){ adapter.submitList(it.toMutableList()) }
+        lifecycleScope.launchWhenStarted {
+                viewModel.allPerson.collect { list -> adapter.submitList(list.toMutableList()) }
+        }
+
         // Setup swipe delete
         val swipeHandler = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false

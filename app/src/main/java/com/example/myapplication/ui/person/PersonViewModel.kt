@@ -12,7 +12,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.*
 import java.util.*
 import javax.inject.Inject
 
@@ -30,20 +31,20 @@ class PersonViewModel @Inject constructor(
         const val PERSON_PIKER_STATE: String = "ui.list.person.piker_state"
     }
 
-    private val _allPerson: MutableLiveData<List<Person>> by lazy { MutableLiveData<List<Person>>() }
-    val allPerson: LiveData<List<Person>> = _allPerson
+    private val _allPerson = MutableSharedFlow<List<Person>>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    val allPerson: SharedFlow<List<Person>> = _allPerson.asSharedFlow()
 
     private val _person: MutableLiveData<Person> by lazy { MutableLiveData<Person>() }
     val person: LiveData<Person> = _person
 
-    private val _personAndStaff: MutableLiveData<PersonAndStaff> by lazy { MutableLiveData<PersonAndStaff>() }
-    val personAndStaff: LiveData<PersonAndStaff> = _personAndStaff
+    private val _personAndStaff = MutableSharedFlow<PersonAndStaff>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    val personAndStaff: SharedFlow<PersonAndStaff> = _personAndStaff
 
     private val _staff: MutableLiveData<Staff> by lazy { MutableLiveData<Staff>() }
     val staff: LiveData<Staff> = _staff
 
-    private val _allStaff: MutableLiveData<List<Staff>> by lazy { MutableLiveData<List<Staff>>() }
-    val allStaff: LiveData<List<Staff>> = _allStaff
+    private val _allStaff = MutableSharedFlow<List<Staff>>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    val allStaff: SharedFlow<List<Staff>> = _allStaff.asSharedFlow()
 
 
     init {
@@ -81,40 +82,22 @@ class PersonViewModel @Inject constructor(
         viewModelScope.launch(IO) { repoPerson.insertPerson(model) }
     }
 
-    fun getAllStaff(){
-        viewModelScope.launch {
-            repoStuff.getAllStaff().collect {
-                _allStaff.value = it
-            }
-        }
+    fun getAllStaff() {
+        viewModelScope.launch { _allStaff.emitAll(repoStuff.getAllStaff()) }
     }
-
     // Display Person with  staff info
     fun getPersonAndStaff(id: Int){
         viewModelScope.launch {
-            _personAndStaff.value = repoStuffAndPersons.getPersonAndStaff(id)
+//            _personAndStaff.emitAll(
+//                flow { emit(repoStuffAndPersons.getPersonAndStaff(id)) }
+//            )
+            _personAndStaff.emit(repoStuffAndPersons.getPersonAndStaff(id))
         }
     }
 
     private fun allPerson(){
         viewModelScope.launch {
-            repoPerson.allPeron().collect { _allPerson.value = it }
-        }
-    }
-
-    fun updatePerson(model: Person){
-        viewModelScope.launch { repoPerson.updatePerson(model) }
-    }
-
-    fun getPerson(id: Int){
-        viewModelScope.launch {
-            repoPerson.getPerson(id).collect { _person.value = it }
-        }
-    }
-
-    fun getStuff(id: Int){
-        viewModelScope.launch {
-            repoStuff.getStaff(id).collect { _staff.value = it  }
+            _allPerson.emitAll(repoPerson.allPeron())
         }
     }
 }

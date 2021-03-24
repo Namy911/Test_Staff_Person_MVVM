@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.myapplication.R
@@ -21,6 +22,7 @@ import com.example.myapplication.databinding.AddPersonFragmentBinding
 import com.example.myapplication.ui.util.MyUtil
 import com.example.myapplication.ui.util.dialog.DialogDatePiker
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import java.util.*
 
 private const val TAG = "AddPersonFragment"
@@ -83,12 +85,14 @@ class AddPersonFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
 
             spinStaff.onItemSelectedListener = this@AddPersonFragment
-            viewModel.allStaff.observe(viewLifecycleOwner) { list ->
-                spinStaff.apply {
-                    adapter = SpinnerArrayAdapter(requireContext(), list)
-                    // Setup Spinner selection state(model: Staff)
-                    savedInstanceState?.let { setSelection(list.indexOf(viewModel.getSpinnerSelection())) }
-                        ?: setSelection(list.indexOf(args.model?.staff))
+            lifecycleScope.launchWhenStarted {
+                viewModel.allStaff.collect { list ->
+                    spinStaff.apply {
+                        adapter = SpinnerArrayAdapter(requireContext(), list)
+                        // Setup Spinner selection state(model: Staff)
+                        savedInstanceState?.let { setSelection(list.indexOf(viewModel.getSpinnerSelection())) }
+                            ?: setSelection(list.indexOf(args.model?.staff))
+                    }
                 }
             }
             // Update screen
