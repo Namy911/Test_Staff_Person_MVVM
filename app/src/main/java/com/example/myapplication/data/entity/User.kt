@@ -1,12 +1,12 @@
 package com.example.myapplication.data.entity
 
+import androidx.room.Entity
+
 data class User(
-    val id: Int,
-    val address: Address,
-    val company: Company,
-    val email: String,
-    val name: String,
-    val phone: String,
-    val username: String,
-    val website: String
+    val `data`: List<Data>,
+    val page: Int,
+    val per_page: Int,
+    val support: Support,
+    val total: Int,
+    val total_pages: Int
 )

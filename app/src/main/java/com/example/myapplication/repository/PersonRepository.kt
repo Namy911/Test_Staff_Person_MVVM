@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 class PersonRepository @Inject constructor(private val store: Person.Store) {
 
-    fun allPeron() = store.allPersonDistinct()
+    fun allPerson() = store.allPerson()
 
     fun getPerson(id: Int) = store.getPersonDistinct(id)
 

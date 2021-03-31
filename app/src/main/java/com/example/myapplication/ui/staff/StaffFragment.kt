@@ -41,6 +41,7 @@ class StaffFragment : Fragment() {
             }
         }
     }
+
     inner class StaffAdapter(): ListAdapter<StaffAndPersons, StaffViewHolder>(diff){
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
                 StaffViewHolder(StaffItemRowBinding.inflate(layoutInflater, parent, false))

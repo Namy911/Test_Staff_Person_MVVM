@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.*
 import com.example.myapplication.R
 import com.example.myapplication.data.entity.Person
@@ -15,7 +16,7 @@ import com.example.myapplication.databinding.PersonItemRowBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 
 private const val TAG = "ListFragment"
 @AndroidEntryPoint
@@ -32,31 +33,39 @@ class ListFragment : Fragment(R.layout.list_fragment) {
         val fabAlbum = view.findViewById<FloatingActionButton>(R.id.fab_album)
 
         fabListStaff.setOnClickListener { findNavController().navigate(ListFragmentDirections.staffFragment()) }
-        fabAlbum.setOnClickListener { findNavController().navigate(ListFragmentDirections.AlbumFragment()) }
+        fabAlbum.setOnClickListener { findNavController().navigate(ListFragmentDirections.userFragment()) }
         fabAddPerson.setOnClickListener { findNavController().navigate(ListFragmentDirections.addPersonFragment(null)) }
         //Setup List Adapter
-        val adapter = TaskAdapter()
+        val adapter = PersonAdapter()
         list.adapter = adapter
         lifecycleScope.launchWhenStarted {
-                viewModel.allPerson.collect { list -> adapter.submitList(list.toMutableList()) }
+            viewModel.listPersons.collectLatest {
+                adapter.submitData(it)
+            }
         }
-
         // Setup swipe delete
-        val swipeHandler = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false
+        val swipeHandler = object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ) = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
-                val person = adapter.currentList[position]
-
-                viewModel.deletePerson(person)
-                Snackbar.make(requireView(), getString(R.string.snack_delete_item, person.name), Snackbar.LENGTH_LONG)
+                (viewHolder as PersonViewHolder).person?.let { person ->
+                    viewModel.deletePerson(person)
+                    Snackbar.make(
+                        requireView(),
+                        getString(R.string.snack_delete_item, person.name),
+                        Snackbar.LENGTH_LONG
+                    )
                         .setAction(getString(R.string.snack_btn_message)) {
                             viewModel.insertPerson(person)
-                            list.scrollToPosition(position)
                         }
                         .setActionTextColor(Color.GREEN)
                         .show()
+                }
             }
         }
         ItemTouchHelper(swipeHandler).apply {
@@ -64,23 +73,30 @@ class ListFragment : Fragment(R.layout.list_fragment) {
         }
     }
 
-    inner class TaskAdapter : ListAdapter<Person, TaskViewHolder>(diff) {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-            return TaskViewHolder(PersonItemRowBinding.inflate(layoutInflater, parent, false))
+    inner class PersonAdapter : PagingDataAdapter<Person, PersonViewHolder>(diff) {
+        override fun onBindViewHolder(holder: PersonViewHolder, position: Int) {
+            val person: Person? = getItem(position)
+            holder.bind(person)
         }
 
-        override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-            holder.bind(getItem(position))
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonViewHolder {
+            return PersonViewHolder(PersonItemRowBinding.inflate(layoutInflater, parent, false))
         }
     }
 
-    inner class TaskViewHolder(private val binding: PersonItemRowBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(model: Person){
+    inner class PersonViewHolder(private val binding: PersonItemRowBinding) : RecyclerView.ViewHolder(binding.root) {
+        var person: Person? = null
+            private set
+
+        fun bind(model: Person?){
             binding.apply {
-                txtSurName.text = model.surName
-                txtName.text = model.name
-                imgPerson.setOnClickListener {
-                    findNavController().navigate(ListFragmentDirections.displayPersonFragment(model.id))
+                model?.let {
+                    txtSurName.text = model.surName
+                    txtName.text = model.name
+                    imgPerson.setOnClickListener {
+                        findNavController().navigate(ListFragmentDirections.displayPersonFragment(model.id))
+                    }
+                    person = model
                 }
             }
         }

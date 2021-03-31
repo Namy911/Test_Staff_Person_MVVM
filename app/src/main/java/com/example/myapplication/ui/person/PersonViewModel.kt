@@ -1,6 +1,9 @@
 package com.example.myapplication.ui.person
 
 import androidx.lifecycle.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.example.myapplication.data.entity.Person
 import com.example.myapplication.data.model.PersonAndStaff
 import com.example.myapplication.data.entity.Staff
@@ -34,22 +37,16 @@ class PersonViewModel @Inject constructor(
     private val _allPerson = MutableSharedFlow<List<Person>>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     val allPerson: SharedFlow<List<Person>> = _allPerson.asSharedFlow()
 
-    private val _person: MutableLiveData<Person> by lazy { MutableLiveData<Person>() }
-    val person: LiveData<Person> = _person
-
     private val _personAndStaff = MutableSharedFlow<PersonAndStaff>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     val personAndStaff: SharedFlow<PersonAndStaff> = _personAndStaff
-
-    private val _staff: MutableLiveData<Staff> by lazy { MutableLiveData<Staff>() }
-    val staff: LiveData<Staff> = _staff
 
     private val _allStaff = MutableSharedFlow<List<Staff>>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     val allStaff: SharedFlow<List<Staff>> = _allStaff.asSharedFlow()
 
 
-    init {
-        allPerson()
-    }
+    val listPersons = Pager(PagingConfig(pageSize = 10)) {
+        repoPerson.allPerson()
+    }.flow.cachedIn(viewModelScope)
 
 // ====================================== Save State Work ============================================= //
 
@@ -95,9 +92,9 @@ class PersonViewModel @Inject constructor(
         }
     }
 
-    private fun allPerson(){
-        viewModelScope.launch {
-            _allPerson.emitAll(repoPerson.allPeron())
-        }
-    }
+//    private fun allPerson(){
+//        viewModelScope.launch {
+//            _allPerson.emitAll(repoPerson.allPeron())
+//        }
+//    }
 }

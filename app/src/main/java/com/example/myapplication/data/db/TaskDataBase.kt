@@ -6,6 +6,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.myapplication.data.db.util.Converters
+import com.example.myapplication.data.entity.Data
 import com.example.myapplication.data.entity.Person
 import com.example.myapplication.data.model.PersonAndStaff
 import com.example.myapplication.data.entity.Staff
@@ -20,6 +21,7 @@ abstract class TaskDataBase: RoomDatabase() {
     abstract fun staffStore(): Staff.Store
     abstract fun staffAndPersonsStore(): StaffAndPersons.Store
     abstract fun personAndStaffStore(): PersonAndStaff.Store
+    abstract fun userStore(): Data.Store
 }
 class PrepopulateDataBase: RoomDatabase.Callback(){
     override fun onCreate(db: SupportSQLiteDatabase) {

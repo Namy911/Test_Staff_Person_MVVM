@@ -20,8 +20,8 @@
             android:id="@+id/staffFragment"
             app:destination="@id/staffFragment" />
         <action
-            android:id="@+id/AlbumFragment"
-            app:destination="@id/albumFragment" />
+            android:id="@+id/userFragment"
+            app:destination="@id/userFragment" />
     </fragment>
     <fragment
         android:id="@+id/addPersonFragment"
@@ -90,20 +90,7 @@
             app:argType="long" />
     </dialog>
     <fragment
-        android:id="@+id/albumFragment"
-        android:name="com.example.myapplication.ui.album.AlbumFragment"
-        android:label="AlbumFragment" >
-        <action
-            android:id="@+id/DisplayAlbumFragment"
-            app:destination="@id/displayAlbumFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/displayAlbumFragment"
-        android:name="com.example.myapplication.ui.album.DisplayAlbumFragment"
-        android:label="fragment_display_album"
-        tools:layout="@layout/display_album_fragment" >
-        <argument
-            android:name="albumId"
-            app:argType="com.example.myapplication.data.entity.Album" />
-    </fragment>
+        android:id="@+id/userFragment"
+        android:name="com.example.myapplication.ui.user.UserFragment"
+        android:label="UserFragment" />
 </navigation>

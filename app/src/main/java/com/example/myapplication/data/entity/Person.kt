@@ -2,6 +2,7 @@ package com.example.myapplication.data.entity
 
 import android.net.Uri
 import android.os.Parcelable
+import androidx.paging.PagingSource
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.ForeignKey.SET_NULL
@@ -45,8 +46,6 @@ data class Person(
         fun getPersonDistinct(id: Int) =  getPerson(id).distinctUntilChanged()
 
         @Query("SELECT * FROM `persons`")
-        fun allPerson(): Flow<List<Person>>
-
-        fun allPersonDistinct() = allPerson().distinctUntilChanged()
+        fun allPerson(): PagingSource<Int, Person>
     }
 }

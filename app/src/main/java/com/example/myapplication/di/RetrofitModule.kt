@@ -1,6 +1,6 @@
 package com.example.myapplication.di
 
-import com.example.myapplication.data.service.AlbumServices
+import com.example.myapplication.data.service.UserServices
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,12 +14,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object RetrofitModule {
-    const val BASE_URL = "https://jsonplaceholder.typicode.com/"
+    private const val BASE_URL = "https://reqres.in/"
 
     @Singleton
     @Provides
-    fun provideAlbumServices(retrofit: Retrofit): AlbumServices =
-        retrofit.create(AlbumServices::class.java)
+    fun provideAlbumServices(retrofit: Retrofit): UserServices =
+        retrofit.create(UserServices::class.java)
 
     @Singleton
     @Provides
